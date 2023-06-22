@@ -10,7 +10,6 @@ from rest_framework import serializers
 
 from medtour.contrib.sorl_thumbnail_serializer.fields import HyperlinkedSorlImageField
 from medtour.guides.models import Guide
-from medtour.orders.models import Payment
 from medtour.tours.models import (
     Tour, TourLocation, TourPaidServices, TourAdditionalTitle,
     TourShots, CommentTour, AdditionalInfoServices,

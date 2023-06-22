@@ -23,17 +23,13 @@ from rest_framework_simplejwt.serializers import TokenRefreshSerializer, TokenBl
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenViewBase, TokenBlacklistView
 
-from medtour.contrib.pagination import StandardResultsSetPagination
-from medtour.notifications.models import Notification
-from medtour.notifications.serializers import NotificationSerializer
-from medtour.orders.models import Payment
 from medtour.users.serializers import (TokenObtainLifetimeSerializer, TokenRefreshLifetimeSerializer,
                                        RegisterOrgSerializer, OrganizationSerializer, LogoutSerializer,
                                        ProfileSerializer, CountrySerializer,
                                        RegionSerializer, UserReadSerializer, EmailAddressSerializer,
                                        PhoneNumberSerializer, ResponseRegisterSerializer,
-                                       PayHistoryHistorySerializer, ResetPasswordSerializer, UserVerifySerializer,
-                                       PayHistoryHistoryDetailSerializer, PasswordResetChangeSerializer,
+                                       ResetPasswordSerializer, UserVerifySerializer,
+                                       PasswordResetChangeSerializer,
                                        PartUserCreateSerializer, CitySerializer,
                                        FirstPageCountriesSerializer)
 from medtour.users.serializers import UserSerializer, CodeSerializer, RegisterUserSerializer
@@ -71,36 +67,6 @@ class PersonViewSet(viewsets.ModelViewSet):
         check_is_authorized(self)
         queryset = Person.objects.filter(user=request.user).prefetch_related("user").first()
         serializer = self.get_serializer(queryset, many=False)
-        return Response(serializer.data)
-
-    @extend_schema(summary="История покупок", description="Вывод всех приобретенных туров пользователя",
-                   responses={200: PayHistoryHistorySerializer(many=True)})
-    @action(detail=False)
-    def payHistory(self, request):  # noqa
-        if isinstance(self.request.user.id, int) is False:
-            return Response(status=status.HTTP_401_UNAUTHORIZED, data={"message": "Unauthorized"})
-        queryset = Payment.objects.filter(
-            user=request.user
-        ).prefetch_related("user")
-        self.pagination_class = StandardResultsSetPagination  # TODO: need to support
-        page = self.paginate_queryset(queryset)
-        serializer = PayHistoryHistorySerializer
-        if page is not None:
-            serializer = serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = serializer(queryset, many=True)
-        return Response(serializer.data)
-
-    @extend_schema(summary="История покупок", description="Вывод всех приобретенных туров пользователя",
-                   responses={200: PayHistoryHistoryDetailSerializer},
-                   parameters=[OpenApiParameter("payHistoryId", int, required=True)],
-                   )
-    @action(detail=False)
-    def payHistoryDetail(self, request):  # noqa
-        if isinstance(self.request.user.id, int) is False:
-            return Response(status=status.HTTP_401_UNAUTHORIZED, data={"message": "Unauthorized"})
-        obj = generics.get_object_or_404(Payment, id=self.request.query_params.get('payHistoryId'))
-        serializer = PayHistoryHistoryDetailSerializer(obj, many=False)
         return Response(serializer.data)
 
 
@@ -621,22 +587,3 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 user_redirect_view = UserRedirectView.as_view()
 
-
-class NotificationViewSet(mixins.ListModelMixin,
-                          mixins.RetrieveModelMixin,
-                          viewsets.GenericViewSet):
-    queryset = Notification.objects.all()
-    serializer_class = NotificationSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def list(self, request, *args, **kwargs):
-        serializer = self.get_serializer(self.queryset.filter(user=self.request.user,
-                                                              read=self.request.query_params.
-                                                              get('read', False)), many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, *args, **kwargs):
-        self.queryset.filter(pk=kwargs['pk']).update(read=True)
-        notification = self.queryset.get(pk=kwargs['pk'])
-        serializer = NotificationSerializer(notification)
-        return Response(serializer.data)

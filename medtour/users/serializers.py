@@ -15,7 +15,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from medtour.contrib.drf_serializer_cache import SerializerCacheMixin
 from medtour.guides.models import Guide
-from medtour.orders.models import Payment
 from medtour.tours.models import Tour
 from medtour.users.models import Country, Region, ActivateCode, City
 from medtour.users.models import Organization, Person, OrganizationCategory
@@ -368,33 +367,6 @@ class LogoutSerializer(serializers.Serializer):
 class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField(required=False)
     phone = PhoneNumberField(required=False)
-
-
-class PayHistoryHistorySerializer(serializers.ModelSerializer):
-    number_type = serializers.StringRelatedField(source="cart.number.title")
-    services_count = serializers.IntegerField(source="cart.get_services_count")
-    status_name = serializers.StringRelatedField(source="get_status_display")
-    tour_name = serializers.StringRelatedField(source="cart.tour.title")
-
-    # TODO: need to optimizations here
-    class Meta:
-        model = Payment
-        exclude = ("cart", "user", "status", "amount")
-
-
-class PayHistoryHistoryDetailSerializer(serializers.ModelSerializer):
-    number_type = serializers.StringRelatedField(source="cart.number.title")
-    services_count = serializers.IntegerField(source="cart.get_services_count")
-    status_name = serializers.StringRelatedField(source="get_status_display")
-    file_field = serializers.FileField(allow_null=True)
-    tour_name = serializers.StringRelatedField(source="cart.tour.title")
-    reservations_start = serializers.DateField(source="reservation.reservation_date.lower", read_only=True)
-    reservations_end = serializers.DateField(source="reservation.reservation_date.upper", read_only=True)
-
-    # TODO: need to optimizations here
-    class Meta:
-        model = Payment
-        exclude = ("cart", "user", "status", "created_at")
 
 
 class UserVerifySerializer(serializers.Serializer):

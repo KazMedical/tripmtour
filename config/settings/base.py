@@ -109,15 +109,9 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "medtour.users",
     "medtour.tours",
-    "medtour.sanatorium",
-    "medtour.pages",
     "medtour.applications",
-    "medtour.notifications",
-    "medtour.orders",
-    "medtour.subscriptions",
     "medtour.tournumbers",
     "medtour.tourpackages",
-    "medtour.paycredentials",
     "medtour.guides",
     "medtour.main"
     # Your stuff: custom apps go here

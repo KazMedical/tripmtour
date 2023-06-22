@@ -39,12 +39,11 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += [
     # API base url
     path("v1/", include("config.api_router"), name="v1"),
-    path("docs/", include("medtour.pages.urls")),
-    path('api/auth/token/', CookieTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/auth/token/refresh/', CookieTokenRefreshView.as_view(), name='token_refresh'),
-    path('api/auth/token/logout/', CookieTokenLogoutView.as_view(), name='token_refresh_logout'),
-    path('api/auth/verify/', VerifyCodeView.as_view(), name='verify_code'),
-    path('api/auth/resetPassword/', ResetPassword.as_view(), name='reset_password'),
+    # path('api/auth/token/', CookieTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path('api/auth/token/refresh/', CookieTokenRefreshView.as_view(), name='token_refresh'),
+    # path('api/auth/token/logout/', CookieTokenLogoutView.as_view(), name='token_refresh_logout'),
+    # path('api/auth/verify/', VerifyCodeView.as_view(), name='verify_code'),
+    # path('api/auth/resetPassword/', ResetPassword.as_view(), name='reset_password'),
     # DRF auth token
     # path("auth-token/", obtain_auth_token),
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),

@@ -4,15 +4,16 @@ from django.utils.translation import gettext_lazy as _
 from medtour.tours.models import Tour
 
 
+class ApplicationTypeChoices(models.TextChoices):
+    TOURS = "tours", _("Tours")
+    GUIDES = "guides", _("Guides")
+
+
 class Application(models.Model):
     fullName = models.CharField(_("Полное имя"), max_length=200)
     phoneNumber = models.CharField(_("Телефонный номер"), max_length=16)
-    region = models.ForeignKey("users.Region", verbose_name=_("Регион"), on_delete=models.CASCADE)
-    category = models.ForeignKey("users.OrganizationCategory",
-                                 on_delete=models.CASCADE,
-                                 verbose_name=_("Тип тура"),
-                                 related_name="applications")
-    description = models.TextField(_("Описание"), null=True, blank=True)
+    type = models.CharField(_("Тип"), max_length=10, choices=ApplicationTypeChoices.choices)
+    trip_id = models.IntegerField(_("Указываете ID guide or tour"))
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -21,7 +22,7 @@ class Application(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return "{} | {}".format(self.fullName, self.category.title)
+        return "{} | {}".format(self.fullName, self.type)
 
 
 class TourApplication(models.Model):

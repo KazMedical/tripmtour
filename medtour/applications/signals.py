@@ -8,6 +8,7 @@ from medtour.applications.tasks import save_application_for_all_tours
 @receiver(post_save, sender=Application)
 def bulk_creating_tour_apps(sender, instance, created, **kwargs):
     if created:
-        save_application_for_all_tours.delay(application_id=instance.pk,
-                                             name=instance.fullName,
-                                             phone=instance.phoneNumber)
+        save_application_for_all_tours.delay(name=instance.fullName,
+                                             phone=instance.phoneNumber,
+                                             obj_type=instance.type,
+                                             trip_id=instance.trip_id)
