@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=medtour
+POSTGRES_USER=sIcOlmYDJdMmMdlbleagPiulrTOJZxME
+POSTGRES_PASSWORD=3DmPD5Pn29zlsAl1Qrl0f1Jwpw00pD45hLr1xSX4QFN9tj055u6VFU4d7eaA1QdV

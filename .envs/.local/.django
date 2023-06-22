@@ -1,0 +1,28 @@
+# General
+# ------------------------------------------------------------------------------
+USE_DOCKER=yes
+IPYTHONDIR=/app/.ipython
+# Redis
+# ------------------------------------------------------------------------------
+REDIS_URL=redis://redis:6379/0
+
+# Celery
+# ------------------------------------------------------------------------------
+
+# Flower
+CELERY_FLOWER_USER=kGGRyTAKCranXwiZqnWNSouMCyXgUvEz
+CELERY_FLOWER_PASSWORD=a1fJNqs9ax8jn2Szla4O95PmRjC4q9MlUS6JiU6qarOWFYDCgCKCmyVe1195JzZa
+CELERY_BROKER_URL=ampqp://guest:guest@localhost:5672/
+DATABASE_URL2=postgres://postgres:1234@localhost:5432/medical
+DJANGO_READ_DOT_ENV_FILE=False
+DJANGO_SETTINGS_MODULE=config.settings.local
+SMSC_LOGIN=qwe2
+SMSC_PASSWORD=qwe2
+MAIN_SITE_URL=http://localhost
+APPLICATION_SEND_BOT_TOKEN=qwe
+APPLICATION_SEND_BOT_GROUP_ID=qwe
+KASSA24_LOGIN=qwe
+KASSA24_PASSWORD=qwe
+GOOGLE_API=qwe2
+DJANGO_SECRET_KEY=qweqw
+DJANGO_STATIC=12312
