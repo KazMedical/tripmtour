@@ -64,16 +64,6 @@ class UserAdmin(CustomUserAdmin):
         return obj.organization.org_name if hasattr(obj, "organization") else obj.people.first_name
 
 
-@admin.register(Person)
-class PersonAdmin(admin.ModelAdmin):
-    raw_id_fields = ["user", "region", "country"]
-
-
-@admin.register(Organization)
-class OrganizationAdmin(admin.ModelAdmin):
-    raw_id_fields = ["user"]
-
-
 @admin.register(OrganizationCategory)
 class OrganizationCategoryAdmin(admin.ModelAdmin):
     list_display = ["title"]

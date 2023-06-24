@@ -6,7 +6,7 @@ def get_program_path(instance, filename):
 
 
 def get_shots_path(instance, filename):
-    return os.path.join('guide_shots', "guide_%s" % str(instance.program.id), filename)
+    return os.path.join('guide_shots', "guide_%s" % str(instance.guide.id), filename)
 
 
 def get_program_shots_path(instance, filename):

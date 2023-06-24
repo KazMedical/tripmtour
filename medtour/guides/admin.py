@@ -20,15 +20,45 @@ class GuideProgramInline(admin.TabularInline):
     extra = 0
 
 
+class GuideShotsInline(admin.TabularInline):
+    model = GuideShots
+    extra = 0
+    readonly_fields = ["thumbnail_preview"]
+    fields = ["thumbnail_preview", "photo"]
+
+    def thumbnail_preview(self, obj):
+        return obj.thumbnail_preview
+
+    thumbnail_preview.short_description = 'Thumbnail Preview'
+    thumbnail_preview.allow_tags = True
+
+
 class ProgramShotsInline(admin.TabularInline):
     model = ProgramShots
     extra = 0
+    readonly_fields = ["thumbnail_preview"]
+    fields = ["thumbnail_preview", "photo"]
+
+    def thumbnail_preview(self, obj):
+        return obj.thumbnail_preview
+
+    thumbnail_preview.short_description = 'Thumbnail Preview'
+    thumbnail_preview.allow_tags = True
 
 
 @admin.register(Guide)
 class GuideAdmin(admin.ModelAdmin):
-    list_display = ["title", "org"]
-    inlines = [GuideProgramInline]
+    list_display = ["title", "org", "program_count"]
+    inlines = [
+        GuideProgramInline,
+        GuideShotsInline,
+    ]
+
+    def program_count(self, obj):
+        return obj.programs.count()
+
+    program_count.short_description = 'Количество програм'
+    program_count.allow_tags = True
 
 
 @admin.register(GuideReview)

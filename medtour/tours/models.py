@@ -126,7 +126,7 @@ class TourShots(OrderedModel):
     @property
     def thumbnail_preview(self):
         if self.photo:
-            _thumbnail = get_thumbnail(self.photo, '300x350', upscale=False, crop="center", quality=100)
+            _thumbnail = get_thumbnail(self.photo, '50x50', upscale=False, crop="center", quality=100)
             return format_html(
                 '<img src="{}" width="{}" height="{}">'.format(_thumbnail.url, _thumbnail.width, _thumbnail.height))
         return ""

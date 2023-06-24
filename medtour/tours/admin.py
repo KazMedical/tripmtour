@@ -12,23 +12,27 @@ class LocationInline(admin.TabularInline):
     model = TourLocation
 
 
+class TourShotsInline(admin.TabularInline):
+    model = TourShots
+    extra = 0
+    readonly_fields = ["thumbnail_preview"]
+    fields = ["thumbnail_preview", "photo"]
+
+    def thumbnail_preview(self, obj):
+        return obj.thumbnail_preview
+
+    thumbnail_preview.short_description = 'Thumbnail Preview'
+    thumbnail_preview.allow_tags = True
+
+
 class PaidServicesInline(admin.TabularInline):
     model = TourPaidServices
     extra = 1
 
 
-class TourBookingExtraHolidaysInline(admin.TabularInline):
-    model = TourBookingExtraHolidays
-    extra = 1
-
-
-class TourBookingHolidayInline(admin.TabularInline):
-    model = TourBookingHoliday
-    extra = 1
-
 @admin.register(Tour)
 class TourAdmin(admin.ModelAdmin):
-    list_display = ["title", "org", "is_moderated", "category"]
+    list_display = ["title", "org", "category", "is_moderated", "numbers_count"]
     list_select_related = ["org", "location", "category"]
     list_editable = ["is_moderated"]
     search_fields = ["title", "org__org_name__iexact"]
@@ -38,10 +42,15 @@ class TourAdmin(admin.ModelAdmin):
     inlines = [
         LocationInline,
         PaidServicesInline,
-        TourBookingExtraHolidaysInline,
-        TourBookingHolidayInline,
+        TourShotsInline,
     ]
     raw_id_fields = ["org", "category", "country", "region", "medical_profiles"]
+
+    def numbers_count(self, obj):
+        return obj.numbers.count()
+
+    numbers_count.short_description = 'Кол. номеров'
+    numbers_count.allow_tags = True
 
 
 class AdditionalInfoServicesInline(admin.TabularInline):
@@ -68,10 +77,10 @@ class TourShotsAdmin(OrderedModelAdmin):
     """Tour Shots Admin"""
     raw_id_fields = ["tour"]
     list_display = (
-                    'tour',
-                    'move_up_down_links',
-                    "thumbnail_preview"
-                    )
+        'tour',
+        'move_up_down_links',
+        "thumbnail_preview"
+    )
     list_select_related = ["tour"]
     list_filter = [("tour", admin.RelatedOnlyFieldListFilter)]
     search_fields = ["tour__title"]
