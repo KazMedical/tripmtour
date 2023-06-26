@@ -187,6 +187,18 @@ class GuideProgram(OrderedModel, SoftDeleteModel):
                                      choices=DistanceUnitChoice.choices, max_length=2)
     languages = MultiSelectField(choices=LanguagesChoice.choices, max_choices=5)
     completion_site = models.CharField(_("Место встречи"), max_length=100)
+    category = models.ForeignKey("guides.GuideCategory",
+                                 on_delete=models.PROTECT,
+                                 verbose_name=_("Категория"),
+                                 related_name="programs")
+    country = models.ForeignKey("users.Country", verbose_name=_("Страна"), related_name="program_countries",
+                                on_delete=models.SET_NULL, blank=True, null=True)
+    region = models.ForeignKey("users.Region", verbose_name=_("Регион"), related_name="program_regions",
+                               on_delete=models.SET_NULL, blank=True, null=True)
+    city = models.ForeignKey("users.City", verbose_name=_("Город"), related_name="program_cities",
+                             on_delete=models.SET_NULL, blank=True, null=True)
+    is_moderated = models.BooleanField(_("is_moderated"), default=False)
+    is_top = models.BooleanField(_("is_top"), default=False)
 
     order_with_respect_to = "guide"
 

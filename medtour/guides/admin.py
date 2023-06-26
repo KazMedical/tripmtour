@@ -80,11 +80,13 @@ class GuideShotsAdmin(admin.ModelAdmin):
 class GuideProgramAdmin(admin.ModelAdmin):
     raw_id_fields = ['guide']
     list_select_related = ['guide']
+    list_display = ["name", "guide", "is_moderated"]
     inlines = [
         ProgramShotsInline,
         ProgramScheduleInline,
         ProgramPlacesInline,
     ]
+    list_editable = ["is_moderated"]
 
 
 @admin.register(GuideServices)

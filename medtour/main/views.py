@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Min, Avg, Count, Q, Value
+from django.db.models import Min, Avg, Count, Q, Value, F
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
@@ -12,7 +12,7 @@ from itertools import chain
 
 from rest_framework.views import APIView
 
-from medtour.guides.models import Guide, Round, GuideCategory
+from medtour.guides.models import Guide, Round, GuideCategory, GuideProgram
 from medtour.main.filters import CityFilter
 from medtour.main.serializers import ContentSerializer, SearchCitySerializer, LockedSerializer, CategorySerializer
 from medtour.tours.models import Tour
@@ -28,21 +28,21 @@ def get_tours(filters):
         staff__avg=Round(Avg('comments__staff'), 2, output_field=models.FloatField()),
         proportion__avg=Round(Avg('comments__proportion'), 2, output_field=models.FloatField()),
         comments__count=Count('comments__service', output_field=models.IntegerField()),
-        type=Value('tours', output_field=models.CharField()),
-    ).prefetch_related("tour_shots").select_related('city').order_by('is_top')
+        obj_type=Value('tours', output_field=models.CharField()),
+    ).prefetch_related("tour_shots").select_related('city', "category").order_by('is_top')
     return tour_qs
 
 
 def get_guides(filters):
-    guides_queryset = Guide.objects.filter(**filters).annotate(
-        minimum_price=Min("programs__price", filter=Q(programs__is_deleted=False)),
-        service__avg=Round(Avg('guide_reviews__service'), 2, output_field=models.FloatField()),
-        location__avg=Round(Avg('guide_reviews__location'), 2, output_field=models.FloatField()),
-        staff__avg=Round(Avg('guide_reviews__staff'), 2, output_field=models.FloatField()),
-        proportion__avg=Round(Avg('guide_reviews__proportion'), 2, output_field=models.FloatField()),
-        comments__count=Count('guide_reviews__service', output_field=models.IntegerField()),
-        type=Value('guides', output_field=models.CharField()),
-    ).prefetch_related('guide_shots').select_related('city')
+    guides_queryset = GuideProgram.objects.filter(**filters).annotate(
+        minimum_price=F('price'),
+        service__avg=Round(Avg('program_reviews__service'), 2, output_field=models.FloatField()),
+        location__avg=Round(Avg('program_reviews__location'), 2, output_field=models.FloatField()),
+        staff__avg=Round(Avg('program_reviews__staff'), 2, output_field=models.FloatField()),
+        proportion__avg=Round(Avg('program_reviews__proportion'), 2, output_field=models.FloatField()),
+        comments__count=Count('program_reviews__service', output_field=models.IntegerField()),
+        obj_type=Value('guide-programs', output_field=models.CharField()),
+    ).prefetch_related('program_shots').select_related('city', "category")
     return guides_queryset
 
 
