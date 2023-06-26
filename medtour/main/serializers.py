@@ -11,14 +11,12 @@ class ContentSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField(default="Көктерек")
     avg_rating = serializers.SerializerMethodField(allow_null=True, default=3.5)
-    slug = serializers.CharField(default="kokterek")
     obj_type = serializers.CharField(default="tours")
     shots = serializers.SerializerMethodField(allow_null=True,
                                               default=["cache/72/12/7212a7f6ff2346379687fc5a9419c039.webp"])
     city = serializers.SerializerMethodField(allow_null=True)
     minimum_price = serializers.IntegerField(read_only=True)
     category = serializers.SerializerMethodField(read_only=True)
-    category_slug = serializers.SerializerMethodField(read_only=True)
     is_top = serializers.BooleanField()
     reviews_count = serializers.SerializerMethodField(read_only=True)
 

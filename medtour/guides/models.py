@@ -159,7 +159,7 @@ class GuideShots(OrderedModel):
 
 
 class GuideProgram(OrderedModel, SoftDeleteModel):
-    name = models.CharField(_("Название программы"), max_length=255)
+    title = models.CharField(_("Название программы"), max_length=255)
     guide = models.ForeignKey(Guide, on_delete=models.CASCADE, related_name='programs')
     type = models.CharField(_("Тип программы"), max_length=10, choices=ProgramTypeChoices.choices)
     price = models.IntegerField(verbose_name=_("Цена"))

@@ -80,7 +80,7 @@ class GuideShotsAdmin(admin.ModelAdmin):
 class GuideProgramAdmin(admin.ModelAdmin):
     raw_id_fields = ['guide']
     list_select_related = ['guide']
-    list_display = ["name", "guide", "is_moderated"]
+    list_display = ["title", "guide", "is_moderated"]
     inlines = [
         ProgramShotsInline,
         ProgramScheduleInline,
