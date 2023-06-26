@@ -1,4 +1,5 @@
-from django.db.models import Q, Min
+from django.db import models
+from django.db.models import Q, Min, Count, Avg
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import OpenApiParameter, extend_schema
@@ -12,7 +13,7 @@ from medtour.guides.serializers import GuideProgramSerializer, GuideReviewSerial
     GuideListSerializer, GuideReadSerializer, GuidePOSTShotsSerializer, ProgramPlacesSerializer, \
     ProgramScheduleSerializer, ProgramReviewSerializer
 from medtour.guides.models import Guide, GuideProgram, GuideReview, GuideServices, GuideShots, ProgramPlaces, \
-    ProgramSchedule, ProgramReview
+    ProgramSchedule, ProgramReview, Round
 from medtour.tours.models import Tour
 
 
@@ -142,25 +143,36 @@ class GuideShotsViewSet(viewsets.ModelViewSet):
 
 
 class GuideProgramViewSet(viewsets.ModelViewSet):
-    queryset = GuideProgram.objects.prefetch_related("services", "excluded_services", "program_shots").select_related("guide")
+    queryset = GuideProgram.objects.prefetch_related(
+        "services", "excluded_services", "program_shots").select_related("guide")
     serializer_class = GuideProgramSerializer
     filterset_fields = ["guide_id"]
     list_serializer_class = GuideProgramListSerializer
     retrieve_serializer_class = GuideProgramDetailSerializer
 
-    @extend_schema(
-        parameters=[OpenApiParameter(name="guide_id", required=True, type=int)],
-        responses={"200": GuideProgramListSerializer(many=True)}
-    )
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if self.action == "list":
+            return qs.filter(
+                guide__is_deleted=False, guide__is_moderated=True
+            ).annotate(
+                service__avg=Round(Avg('program_reviews__service'), 2, output_field=models.FloatField()),
+                location__avg=Round(Avg('program_reviews__location'), 2, output_field=models.FloatField()),
+                staff__avg=Round(Avg('program_reviews__staff'), 2, output_field=models.FloatField()),
+                proportion__avg=Round(Avg('program_reviews__proportion'), 2, output_field=models.FloatField()),
+                comments__count=Count('program_reviews__service', output_field=models.IntegerField())
+            )
+        return qs
+
     def list(self, request, *args, **kwargs):
-        guide_id = request.query_params.get('guide_id')  # noqa
-        if not guide_id:
-            return Response(
-                {
-                    "message": _("Обязательный параметр guide_id не указан.")},
-                status=status.HTTP_400_BAD_REQUEST)
-        qs = self.get_queryset().filter(guide_id=guide_id, hide=False)[:24]
-        serializer = self.list_serializer_class(qs, many=True)
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.list_serializer_class(queryset, many=True)
         return Response(serializer.data)
 
     @extend_schema(

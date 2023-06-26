@@ -7,7 +7,7 @@ from rest_framework.routers import DefaultRouter, SimpleRouter
 from medtour.tours.views import TourViewSet
 
 # GUIDES
-from medtour.guides.views import GuideViewSet
+from medtour.guides.views import GuideViewSet, ProgramReviewViewSet, GuideProgramViewSet
 
 if settings.DEBUG:
     router = DefaultRouter()
@@ -52,9 +52,9 @@ router.register("tours", TourViewSet, basename="tours")
 # GUIDES
 router.register('guides', GuideViewSet)
 # router.register('guide-reviews', GuideReviewViewSet)
-# router.register('program-reviews', ProgramReviewViewSet)
+router.register('program-reviews', ProgramReviewViewSet)
 # router.register('guide-shots', GuideShotsViewSet)
-# router.register('guide-programs', GuideProgramViewSet)
+router.register('guide-programs', GuideProgramViewSet)
 # router.register('guide-services', GuideServicesViewset)
 # router.register('guide-program-places', ProgramPlacesAPIView)
 # router.register('guide-program-schedules', ProgramScheduleAPIView)

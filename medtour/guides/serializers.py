@@ -1,5 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular import types
+from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 from ordered_model.serializers import OrderedModelSerializer
 from rest_framework import serializers
@@ -160,10 +161,35 @@ class ProgramShotsSerializer(serializers.ModelSerializer):
 
 class GuideProgramListSerializer(serializers.ModelSerializer):
     program_shots = ProgramShotsSerializer(many=True, read_only=True)
+    avg_rating = serializers.SerializerMethodField(allow_null=True, default=3.5)
+    city = serializers.StringRelatedField(source="guide.city.name", allow_null=True)
+    reviews_count = serializers.SerializerMethodField(read_only=True)
+    is_top = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = GuideProgram
-        fields = ["id", "name", "program_shots", "price", "seats_count"]
+        fields = ["id", "name", "program_shots", "price",
+                  "seats_count", "avg_rating", "city", "reviews_count", "is_top"]
+
+    @extend_schema_field(OpenApiTypes.NUMBER)
+    def get_avg_rating(self, obj):
+        rating_dict = {
+            'service': obj.service__avg,
+            'location': obj.location__avg,
+            'staff': obj.staff__avg,
+            'proportion': obj.proportion__avg,
+        }
+        values = [value for value in rating_dict.values() if value is not None]
+        average = round(sum(values) / len(values), 1) if values else None
+        return average
+
+    @extend_schema_field(OpenApiTypes.INT)
+    def get_reviews_count(self, obj):
+        return obj.comments__count
+
+    @extend_schema_field(OpenApiTypes.BOOL)
+    def get_is_top(self, obj):
+        return obj.guide.is_top
 
 
 class GuideProgramDetailSerializer(serializers.ModelSerializer):
