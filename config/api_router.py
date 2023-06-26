@@ -2,9 +2,10 @@ from django.conf import settings
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
-
+from medtour.tournumbers.views import TourNumbersView
+from medtour.tourpackages.views import TourPackagesView
 # TOURS
-from medtour.tours.views import TourViewSet
+from medtour.tours.views import TourViewSet, TourPaidServicesView, TourLocationView
 
 # GUIDES
 from medtour.guides.views import GuideViewSet, ProgramReviewViewSet, GuideProgramViewSet
@@ -28,15 +29,15 @@ else:
 
 # TOURS
 router.register("tours", TourViewSet, basename="tours")
-# router.register("packages", TourPackagesView)
-# router.register("paid-services", TourPaidServicesView)
-# router.register("location", TourLocationView)
+router.register("packages", TourPackagesView)
+router.register("paid-services", TourPaidServicesView)
+router.register("location", TourLocationView)
 # router.register("shots", TourShotsView, basename='tour-shots')
 # router.register("additionalInfo/title", AdditionalTitleViewset)
 # router.register("additionalInfo/tourTitle", AdditionalInfoTitleViewSet)
 # router.register("additionalInfo/Services", AdditionalInfoServicesViewSet)
 # router.register("comments", TourCommentView)
-# router.register("numbers", TourNumbersView, basename='tour-numbers')
+router.register("numbers", TourNumbersView, basename='tour-numbers')
 # router.register("number-shots", NumberShotsViewSet, basename='number-shots-get')
 # router.register("org_type", OrgCategoryView)
 # router.register("tourPrice", TourPriceFileView)
