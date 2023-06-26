@@ -75,6 +75,7 @@ class LockedSerializer(serializers.Serializer):
 
 
 class CategorySerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     title = serializers.CharField()
     title_color = serializers.CharField()
     slug = serializers.CharField()

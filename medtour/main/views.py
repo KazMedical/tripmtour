@@ -120,10 +120,10 @@ class CategoriesListAPIView(APIView):
 
     def get(self, request):
         combined_queryset = chain(
-            OrganizationCategory.objects.annotate(
+            OrganizationCategory.objects.filter(is_main=True).annotate(
                 type=Value('tours', output_field=models.CharField())
             ),
-            GuideCategory.objects.annotate(
+            GuideCategory.objects.filter(is_main=True).annotate(
                 type=Value('guide-programs', output_field=models.CharField()),
             )
         )
