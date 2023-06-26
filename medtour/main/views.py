@@ -90,7 +90,7 @@ class ToursGuidesView(APIView):
             serializer = ContentSerializer(combined_queryset, many=True)
         elif entity == "tours":
             serializer = ContentSerializer(get_tours(filters), many=True)
-        elif entity == "guides":
+        elif entity == "guide-programs":
             serializer = ContentSerializer(get_guides(filters), many=True)
         else:
             return Response(
@@ -124,7 +124,7 @@ class CategoriesListAPIView(APIView):
                 type=Value('tours', output_field=models.CharField())
             ),
             GuideCategory.objects.annotate(
-                type=Value('guides', output_field=models.CharField()),
+                type=Value('guide-programs', output_field=models.CharField()),
             )
         )
         serializer = self.serializer_class(combined_queryset, many=True)
