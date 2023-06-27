@@ -6,13 +6,13 @@ from medtour.tours.models import Tour
 
 class ApplicationTypeChoices(models.TextChoices):
     TOURS = "tours", _("Tours")
-    GUIDES = "guides", _("Guides")
+    GUIDE_PROGRAMS = "guide-programs", _("Guide programs")
 
 
 class Application(models.Model):
     fullName = models.CharField(_("Полное имя"), max_length=200)
     phoneNumber = models.CharField(_("Телефонный номер"), max_length=16)
-    type = models.CharField(_("Тип"), max_length=10, choices=ApplicationTypeChoices.choices)
+    type = models.CharField(_("Тип"), max_length=20, choices=ApplicationTypeChoices.choices)
     trip_id = models.IntegerField(_("Указываете ID guide or tour"))
     created_at = models.DateTimeField(auto_now_add=True)
 
