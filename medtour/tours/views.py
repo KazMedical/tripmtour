@@ -14,6 +14,7 @@ from medtour.contrib.exceptions import ImATeapot
 from medtour.contrib.required_field_list_view.viewsets import TourIdRequiredFieldsModelViewSet
 from medtour.contrib.serializers import ReadWriteSerializerMixin
 from medtour.contrib.soft_delete_model import SoftDeleteModelViewSet
+from medtour.main.serializers import ContentSerializer
 from medtour.tours.serializers import (
     TourSerializer, TourPaidServicesSerializer,
     TourLocationSerializer, TourShotsSerializer,
@@ -56,7 +57,7 @@ class TourViewSet(ReadWriteSerializerMixin, SoftDeleteModelViewSet):
     queryset = Tour.objects.all()
     write_serializer_class = TourSerializer
     read_serializer_class = TourReadSerializer
-    list_serializer_class = TourListSerializer
+    list_serializer_class = ContentSerializer
     filterset_fields = ['region_id', "category_id", "country_id",
                         "org_id", "org__user_id", "category__slug"]
     parser_classes = (MultiPartParser, JSONParser)

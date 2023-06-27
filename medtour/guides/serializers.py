@@ -168,7 +168,7 @@ class GuideProgramListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GuideProgram
-        fields = ["id", "name", "program_shots", "price",
+        fields = ["id", "title", "program_shots", "price",
                   "seats_count", "avg_rating", "city", "reviews_count", "is_top"]
 
     @extend_schema_field(OpenApiTypes.NUMBER)

@@ -14,6 +14,7 @@ from medtour.guides.serializers import GuideProgramSerializer, GuideReviewSerial
     ProgramScheduleSerializer, ProgramReviewSerializer
 from medtour.guides.models import Guide, GuideProgram, GuideReview, GuideServices, GuideShots, ProgramPlaces, \
     ProgramSchedule, ProgramReview, Round
+from medtour.main.serializers import ContentSerializer
 from medtour.tours.models import Tour
 
 
@@ -147,7 +148,7 @@ class GuideProgramViewSet(viewsets.ModelViewSet):
         "services", "excluded_services", "program_shots").select_related("guide")
     serializer_class = GuideProgramSerializer
     filterset_fields = ["guide_id", "category_id"]
-    list_serializer_class = GuideProgramListSerializer
+    list_serializer_class = ContentSerializer
     retrieve_serializer_class = GuideProgramDetailSerializer
 
     def get_queryset(self):
