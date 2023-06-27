@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Q, Min, Count, Avg
+from django.db.models import Q, Min, Count, Avg, F, Value
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import OpenApiParameter, extend_schema
@@ -157,11 +157,13 @@ class GuideProgramViewSet(viewsets.ModelViewSet):
             return qs.filter(
                 guide__is_deleted=False, guide__is_moderated=True
             ).annotate(
+                minimum_price=F('price'),
                 service__avg=Round(Avg('program_reviews__service'), 2, output_field=models.FloatField()),
                 location__avg=Round(Avg('program_reviews__location'), 2, output_field=models.FloatField()),
                 staff__avg=Round(Avg('program_reviews__staff'), 2, output_field=models.FloatField()),
                 proportion__avg=Round(Avg('program_reviews__proportion'), 2, output_field=models.FloatField()),
-                comments__count=Count('program_reviews__service', output_field=models.IntegerField())
+                comments__count=Count('program_reviews__service', output_field=models.IntegerField()),
+                obj_type=Value('guide-programs', output_field=models.CharField()),
             )
         return qs
 

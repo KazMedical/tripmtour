@@ -282,7 +282,7 @@ class ProgramSchedule(models.Model):
         verbose_name_plural = _("Расписание программ")
 
     def __str__(self):
-        return self.program.name + self.start_time.strftime("%H:%M:%") + "|" + self.title
+        return self.program.title + self.start_time.strftime("%H:%M:%") + "|" + self.title
 
 
 class ProgramPlaces(models.Model):
