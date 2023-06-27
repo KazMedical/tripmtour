@@ -146,7 +146,7 @@ class GuideShotsViewSet(viewsets.ModelViewSet):
 class GuideProgramViewSet(viewsets.ModelViewSet):
     queryset = GuideProgram.objects.prefetch_related(
         "services", "excluded_services", "program_shots").select_related("guide")
-    serializer_class = GuideProgramSerializer
+    serializer_class = ContentSerializer
     filterset_fields = ["guide_id", "category_id"]
     list_serializer_class = ContentSerializer
     retrieve_serializer_class = GuideProgramDetailSerializer
