@@ -207,7 +207,7 @@ class GuideProgram(OrderedModel, SoftDeleteModel):
         verbose_name_plural = _("Программы гидов")
 
     def __str__(self):
-        return "Гид: {} | Програма: {}".format(self.guide.title, self.name)
+        return "Гид: {} | Програма: {}".format(self.guide.title, self.title)
 
 
 class ProgramReview(models.Model):
