@@ -81,6 +81,7 @@ class CategorySerializer(serializers.Serializer):
     slug = serializers.CharField()
     photo = serializers.ImageField()
     icon = serializers.FileField()
+    icon_active = serializers.FileField()
     column = serializers.CharField()
     type = serializers.CharField()
     is_main = serializers.BooleanField()

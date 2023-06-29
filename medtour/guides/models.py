@@ -24,6 +24,7 @@ class GuideCategory(models.Model):  # noqa
     slug = models.SlugField(_("Слаг"), blank=True, max_length=255)
     photo = models.ImageField(default='/static/images/default.svg', upload_to="banners")
     icon = models.FileField(default='/static/images/cart.svg', upload_to="category_icons")
+    icon_active = models.FileField(default='/static/images/cart.svg', upload_to="category_icons")
     title_color = models.CharField(default='#FFFFFF', max_length=10)
     column = models.CharField(default="two", max_length=10)
     is_main = models.BooleanField(default=False)
