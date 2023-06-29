@@ -94,3 +94,12 @@ class CodeAdmin(admin.ModelAdmin):
 
 admin.site.register(ActivateCode, CodeAdmin)
 admin.site.register(RestoreCode, CodeAdmin)
+
+@admin.register(Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
+    pass
