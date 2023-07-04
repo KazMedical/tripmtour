@@ -275,7 +275,7 @@ class GuideServices(models.Model):
 class ProgramSchedule(models.Model):
     program = models.ForeignKey(GuideProgram, related_name="schedules", on_delete=models.CASCADE)
     title = models.CharField(_("Заголовок"), max_length=255)
-    description = models.TextField(_("Описание"))
+    description = models.TextField(_("Описание"), blank=True, null=True)
     start_time = models.TimeField(_("Время начала"))
 
     class Meta:
@@ -296,4 +296,4 @@ class ProgramPlaces(models.Model):
         verbose_name_plural = _("Местности программ")
 
     def __str__(self):
-        return self.program.name + self.terrain
+        return self.program.title + self.terrain
