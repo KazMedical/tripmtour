@@ -22,7 +22,7 @@ class Round(Func):
 class GuideCategory(models.Model):  # noqa
     title = models.CharField(_("Title"), max_length=100)  # noqa
     slug = models.SlugField(_("Слаг"), blank=True, max_length=255)
-    photo = models.ImageField(default='/static/images/default.svg', upload_to="banners")
+    photo = models.ImageField(default='/static/images/default.svg', upload_to="categories")
     icon = models.FileField(default='/static/images/cart.svg', upload_to="category_icons")
     icon_active = models.FileField(default='/static/images/cart.svg', upload_to="category_icons")
     title_color = models.CharField(default='#FFFFFF', max_length=10)
