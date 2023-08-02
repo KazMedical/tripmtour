@@ -32,8 +32,8 @@ djangorestframework-recursive==0.1.2
 django-phone-auth==0.3.1
 django-mptt
 django_seed==0.3.1
-django_ckeditor==6.5.1  # https://github.com/django-ckeditor/django-ckeditor
 django-modeltranslation==0.18.5  # https://django-modeltranslation.readthedocs.io/en/latest/
 # django-multiselectfield==0.1.12  # https://github.com/goinnn/django-multiselectfield
 django-multiselectfield2==0.0.1  # https://github.com/goinnn/django-multiselectfield
 django-jazzmin==2.6.0
+django-ckeditor==6.7.0

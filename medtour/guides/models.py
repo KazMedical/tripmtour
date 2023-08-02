@@ -1,3 +1,4 @@
+from ckeditor.fields import RichTextField
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 from django.db import models
 from django.db.models import Avg, Count, Func
@@ -44,7 +45,7 @@ class GuideCategory(models.Model):  # noqa
 
 class Guide(SoftDeleteModel):
     title = models.CharField(max_length=100, verbose_name=_("Название гида"))
-    description = models.TextField(blank=True, null=True, verbose_name=_("Общая информация"))
+    description = RichTextField(blank=True, null=True, verbose_name=_("Общая информация"))
     org = models.OneToOneField("users.Organization", related_name="guides", on_delete=models.SET_NULL,
                                verbose_name=_("Организация"), null=True,
                                help_text=_("Прикрепленная организация к гиду"))
@@ -67,7 +68,7 @@ class Guide(SoftDeleteModel):
                              on_delete=models.SET_NULL, blank=True, null=True)
     email = models.EmailField(null=True, blank=True, help_text=_("Пожалуйста напишите ваш эмейл"))
     address = models.CharField(_("Адрес организации"), max_length=255, null=True, blank=True)
-    working_time = models.TextField(_("Время работы"), null=True, blank=True)
+    working_time = RichTextField(_("Время работы"), null=True, blank=True)
     youtube_url = models.CharField(_("Ссылка на Youtube"), max_length=200, null=True, blank=True)
     lon = models.FloatField(_("Долгота адреса"), blank=True, null=True)
     lat = models.FloatField(_("Широта адреса"), blank=True, null=True)
@@ -120,7 +121,7 @@ class GuideReview(models.Model):
     staff = models.IntegerField(_("Персонал"), validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
     proportion = models.IntegerField(_("Соотношение цена/качество"),
                                      validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
-    text = models.TextField(validators=[
+    text = RichTextField(validators=[
         MinLengthValidator(20, message=_("Минимальная длина отзыва должна превышать 20 символа"))
     ])
     created_at = models.DateTimeField(auto_now_add=True)
@@ -220,7 +221,7 @@ class ProgramReview(models.Model):
     staff = models.IntegerField(_("Персонал"), validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
     proportion = models.IntegerField(_("Соотношение цена/качество"),
                                      validators=[MinValueValidator(0), MaxValueValidator(5)], default=0)
-    text = models.TextField(validators=[
+    text = RichTextField(validators=[
         MinLengthValidator(20, message=_("Минимальная длина отзыва должна превышать 20 символа"))
     ])
     created_at = models.DateTimeField(auto_now_add=True)
@@ -275,7 +276,7 @@ class GuideServices(models.Model):
 class ProgramSchedule(models.Model):
     program = models.ForeignKey(GuideProgram, related_name="schedules", on_delete=models.CASCADE)
     title = models.CharField(_("Заголовок"), max_length=255)
-    description = models.TextField(_("Описание"), blank=True, null=True)
+    description = RichTextField(_("Описание"), blank=True, null=True)
     start_time = models.TimeField(_("Время начала"))
 
     class Meta:
@@ -289,7 +290,7 @@ class ProgramSchedule(models.Model):
 class ProgramPlaces(models.Model):
     program = models.ForeignKey(GuideProgram, related_name="places", on_delete=models.CASCADE)
     terrain = models.CharField(_("Местность"), max_length=200)
-    description = models.TextField(_("Описание местности"))
+    description = RichTextField(_("Описание местности"))
 
     class Meta:
         verbose_name = _("Местность программы")
