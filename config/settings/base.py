@@ -440,7 +440,7 @@ def ckeditor_file_generator(f_n):
     return result
 
 
-CKEDITOR_FILENAME_GENERATOR = 'ckeditor_file_generator'
+CKEDITOR_FILENAME_GENERATOR = 'config.settings.base.ckeditor_file_generator'
 
 CKEDITOR_CONFIGS = {
     'default':
