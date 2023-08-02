@@ -1,4 +1,5 @@
 from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 from django.db import models
 from django.db.models import Avg, Count, Func
@@ -290,7 +291,7 @@ class ProgramSchedule(models.Model):
 class ProgramPlaces(models.Model):
     program = models.ForeignKey(GuideProgram, related_name="places", on_delete=models.CASCADE)
     terrain = models.CharField(_("Местность"), max_length=200)
-    description = RichTextField(_("Описание местности"))
+    description = RichTextUploadingField(_("Описание местности"))
 
     class Meta:
         verbose_name = _("Местность программы")
