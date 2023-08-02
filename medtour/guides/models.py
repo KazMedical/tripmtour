@@ -276,7 +276,7 @@ class GuideServices(models.Model):
 class ProgramSchedule(models.Model):
     program = models.ForeignKey(GuideProgram, related_name="schedules", on_delete=models.CASCADE)
     title = models.CharField(_("Заголовок"), max_length=255)
-    description = RichTextField(_("Описание"), blank=True, null=True)
+    description = models.TextField(_("Описание"), blank=True, null=True)
     start_time = models.TimeField(_("Время начала"))
 
     class Meta:
