@@ -11,6 +11,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 from medtour.tours.sitemaps import TourSitemap
 from medtour.users.views import CookieTokenRefreshView, CookieTokenObtainPairView, \
     CookieTokenLogoutView, VerifyCodeView, ResetPassword  # Import the above views
+from . import views
 
 sitemaps = {
     "tours": TourSitemap,
@@ -25,6 +26,7 @@ urlpatterns = [
     # User management
     path("users/", include("medtour.users.mvt_urls", namespace="users")),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('custom_upload/', views.upload_file_view, name='upload_file_view'),
     # path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path("accounts/", include("phone_auth.urls")),

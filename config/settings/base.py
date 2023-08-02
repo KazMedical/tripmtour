@@ -429,15 +429,19 @@ REST_USE_JWT = True
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 
+from django.urls import reverse
 
-def ckeditor_file_generator(f_n):
-    year = datetime.datetime.year
-    month = datetime.datetime.month
-    day = datetime.datetime.day
-    hour = datetime.datetime.hour
-    minute = datetime.datetime.minute
-    result = f"{year}/{month}/{day}/{hour}-{minute}--{f_n}"
-    return result
+
+def ckeditor_file_generator(filename, request):
+    # Generate a unique filename (you can use any logic you need)
+    unique_filename = filename
+
+    # Get the URL path for accessing uploaded files
+    upload_url = request.build_absolute_uri(reverse('upload_file_view'))
+    # Combine the URL path and the generated filename
+    file_path = f'{upload_url}{unique_filename}'
+
+    return file_path
 
 
 CKEDITOR_FILENAME_GENERATOR = 'config.settings.base.ckeditor_file_generator'
