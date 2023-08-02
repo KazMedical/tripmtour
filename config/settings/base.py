@@ -450,6 +450,12 @@ CKEDITOR_CONFIGS = {
     'default':
         {
             'toolbar': 'full',
+        'filebrowserUploadUrl': '/upload/',  # Replace '/upload/' with the URL pattern for the upload view
+        'filebrowserUploadPath': '/media/',  # Replace '/media/' with the URL path where uploaded files will be served
+        'filebrowserUploadMethod': 'xhr',
+        'filebrowserImageUploadUrl': '/upload/',  # Replace '/upload/' with the URL pattern for the upload view
+        'filebrowserImageUploadPath': '/media/',  # Replace '/media/' with the URL path where uploaded images will be served
+        'filebrowserImageUploadMethod': 'xhr',
         },
 }
 

@@ -26,7 +26,7 @@ urlpatterns = [
     # User management
     path("users/", include("medtour.users.mvt_urls", namespace="users")),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('custom_upload/', views.upload_file_view, name='upload_file_view'),
+    path('upload/', views.upload_file_view, name='upload_file_view'),
     # path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path("accounts/", include("phone_auth.urls")),
